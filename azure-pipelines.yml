@@ -8,49 +8,54 @@ trigger:
 
 pool:
   vmImage: ubuntu-latest
+stages:
+  - stage: Build
+    displayName: Build
+    jobs:
+       - job: 
+         displayName: Build, Run and Publish
+         steps:
+            - task: NodeTool@0
+              inputs:
+                versionSpec: '9.x'
+              displayName: 'Install Node.js'
 
-steps:
-- task: NodeTool@0
-  inputs:
-    versionSpec: '9.x'
-  displayName: 'Install Node.js'
+            - task: CmdLine@2
+              displayName: 'npm install'
+              continueOnError: false 
+              inputs:
+                      script: 'npm install'
+                      workingDirectory: '$(Build.SourcesDirectory)'
 
-- task: CmdLine@2
-  displayName: 'npm install'
-  continueOnError: false 
-  inputs:
-          script: 'npm install'
-          workingDirectory: '$(Build.SourcesDirectory)'
+            - task: CmdLine@2
+              displayName: 'npm run build'
+              continueOnError: false 
+              inputs:
+                      script: 'npm build'
+                      workingDirectory: '$(Build.SourcesDirectory)'  
 
-- task: CmdLine@2
-  displayName: 'npm run build'
-  continueOnError: false 
-  inputs:
-          script: 'npm build'
-          workingDirectory: '$(Build.SourcesDirectory)'  
+            - task: CopyFiles@2
+              displayName: "Copy files"
+              inputs:
+                        SourceFolder: '$(Build.SourcesDirectory)'
+                        Contents: '**'
+                        TargetFolder: '$(Build.ArtifactStagingDirectory)'
 
-- task: CopyFiles@2
-  displayName: "Copy files"
-  inputs:
-            SourceFolder: '$(Build.SourcesDirectory)'
-            Contents: '**'
-            TargetFolder: '$(Build.ArtifactStagingDirectory)'
+            - task: ArchiveFiles@2
+              inputs:
+                      rootFolderOrFile: '$(Build.ArtifactStagingDirectory)'
+                      includeRootFolder: false
+                      archiveType: 'zip'
+                      archiveFile: '$(Build.ArtifactStagingDirectory)/$(Build.BuildId).zip'
+                      replaceExistingArchive: true
 
-- task: ArchiveFiles@2
-  inputs:
-           rootFolderOrFile: '$(Build.ArtifactStagingDirectory)'
-           includeRootFolder: false
-           archiveType: 'zip'
-           archiveFile: '$(Build.ArtifactStagingDirectory)/$(Build.BuildId).zip'
-           replaceExistingArchive: true
+            - task: PublishBuildArtifacts@1
+              inputs:
+                            PathtoPublish: '$(Build.ArtifactStagingDirectory)/$(Build.BuildId).zip'
+                            ArtifactName: 'Contentful'
+                            publishLocation: 'Container'
 
-- task: PublishBuildArtifacts@1
-  inputs:
-              PathtoPublish: '$(Build.ArtifactStagingDirectory)/$(Build.BuildId).zip'
-              ArtifactName: 'Contentful'
-              publishLocation: 'Container'
-
-jobs:
+       - job:
        - deployment: VMDeploy
          displayName: Deploy to VM
          environment: 
@@ -64,5 +69,5 @@ jobs:
                       - task: DownloadPipelineArtifact@2
                         inputs:
                           buildType: 'current'
-                          artifactName: 'CloudSigma'
+                          artifactName: 'Contentful'
                           targetPath: '$(Pipeline.Workspace)'
