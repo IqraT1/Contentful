@@ -66,8 +66,4 @@ stages:
                 runOnce:
                   deploy:   
                       steps:
-                      - task: DownloadPipelineArtifact@2
-                        inputs:
-                          buildType: 'current'
-                          artifactName: 'Contentful'
-                          targetPath: '$(Pipeline.Workspace)'
+                      
