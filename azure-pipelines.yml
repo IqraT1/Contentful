@@ -27,4 +27,17 @@ steps:
   continueOnError: false 
   inputs:
           script: 'npm build'
-          workingDirectory: '$(Build.SourcesDirectory)'    
+          workingDirectory: '$(Build.SourcesDirectory)'  
+
+- task: CopyFiles@2
+  displayName: "Copy files"
+  inputs:
+            SourceFolder: '$(Build.SourcesDirectory)'
+            Contents: '**'
+            TargetFolder: '$(Build.ArtifactStagingDirectory)'
+
+- task: PublishBuildArtifacts@1
+  inputs:
+              PathtoPublish: '$(Build.ArtifactStagingDirectory)/$(Build.BuildId).zip'
+              ArtifactName: 'Contentful'
+              publishLocation: 'Container'
