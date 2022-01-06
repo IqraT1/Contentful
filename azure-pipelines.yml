@@ -12,13 +12,19 @@ pool:
 steps:
 - task: NodeTool@0
   inputs:
-    versionSpec: '10.x'
+    versionSpec: '9.x'
   displayName: 'Install Node.js'
 
-- script: |
-    npm install
-    npm run build
-  displayName: 'npm install and build'
-  
-- script: |
-    npm run start:dev
+- task: CmdLine@2
+  displayName: 'npm install'
+  continueOnError: false 
+  inputs:
+          script: 'npm install'
+          workingDirectory: '$(Build.SourcesDirectory)/Source/Development/Client/NubylaWeb/UI'
+
+- task: CmdLine@2
+  displayName: 'npm run build'
+  continueOnError: false 
+  inputs:
+          script: 'npm build'
+          workingDirectory: '$(Build.SourcesDirectory)/Source/Development/Client/NubylaWeb/UI'    
