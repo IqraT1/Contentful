@@ -20,11 +20,11 @@ steps:
   continueOnError: false 
   inputs:
           script: 'npm install'
-          workingDirectory: '$(Build.SourcesDirectory)/Source/Development/Client/NubylaWeb/UI'
+          workingDirectory: '$(Build.SourcesDirectory)/the-example-app.nodejs-master/the-example-app.nodejs-master'
 
 - task: CmdLine@2
   displayName: 'npm run build'
   continueOnError: false 
   inputs:
           script: 'npm build'
-          workingDirectory: '$(Build.SourcesDirectory)/Source/Development/Client/NubylaWeb/UI'    
+          workingDirectory: '$(Build.SourcesDirectory)/the-example-app.nodejs-master\the-example-app.nodejs-master'    
