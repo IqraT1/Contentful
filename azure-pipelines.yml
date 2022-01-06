@@ -27,4 +27,4 @@ steps:
   continueOnError: false 
   inputs:
           script: 'npm build'
-          workingDirectory: '$(Build.SourcesDirectory)/the-example-app.nodejs-master\the-example-app.nodejs-master'    
+          workingDirectory: '$(Build.SourcesDirectory)/the-example-app.nodejs-master/the-example-app.nodejs-master'    
