@@ -49,3 +49,20 @@ steps:
               PathtoPublish: '$(Build.ArtifactStagingDirectory)/$(Build.BuildId).zip'
               ArtifactName: 'Contentful'
               publishLocation: 'Container'
+
+jobs:
+       - deployment: VMDeploy
+         displayName: Deploy to VM
+         environment: 
+                name: CloudSigma
+                resourceType: VirtualMachine
+                tags: dev, web # only deploy to virtual machines with this tag
+         strategy:
+                runOnce:
+                  deploy:   
+                      steps:
+                      - task: DownloadPipelineArtifact@2
+                        inputs:
+                          buildType: 'current'
+                          artifactName: 'CloudSigma'
+                          targetPath: '$(Pipeline.Workspace)'
