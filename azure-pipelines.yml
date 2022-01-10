@@ -74,8 +74,6 @@ stages:
                             WebsiteName: 'Contenful'
                             WebsitePhysicalPath: 'C:\contentful\Deployment'
                             WebsitePhysicalPathAuth: 'WebsiteUserPassThrough'
-                            AddBinding: true
-                            Bindings: 'http/All Unassigned:80:'
                           
                         - task: IISWebAppDeploymentOnMachineGroup@0
                           displayName: IISWebAppDeploy
