@@ -71,7 +71,7 @@ jobs:
                               buildType: 'current'
                               downloadType: 'single'
                               artifactName: 'Contentful'
-                              downloadPath: '$(System.ArtifactsDirectory)/$(Build.BuildId).zip'
+                              downloadPath: '$(System.ArtifactsDirectory)/Contentful/$(Build.BuildId).zip'
                         - task: IISWebAppManagementOnMachineGroup@0
                           continueOnError: false 
                           displayName: IISWebAppManage
