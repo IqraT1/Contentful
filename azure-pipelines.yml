@@ -44,7 +44,7 @@ stages:
               displayName: "Copy files"
               continueOnError: false 
               inputs:
-                        SourceFolder: '$(Build.SourcesDirectory)'
+                        SourceFolder: '$(Agent.BuildDirectory)/build'
                         Contents: '**'
                         TargetFolder: '$(Build.ArtifactStagingDirectory)'
 
