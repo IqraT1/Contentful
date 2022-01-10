@@ -9,7 +9,15 @@ trigger:
 pool:
   vmImage: ubuntu-latest
 
-jobs:
+variables:
+  buildConfiguration: 'Debug'
+  buildPlatform: 'Any CPU'
+  continueOnError: true
+
+stages:
+  - stage: Build
+    displayName: Build
+    jobs:
        - job: 
          displayName: Build, Run and Publish
          steps:
@@ -46,23 +54,28 @@ jobs:
                       rootFolderOrFile: '$(Build.ArtifactStagingDirectory)'
                       includeRootFolder: false
                       archiveType: 'zip'
-                      archiveFile: '$(Build.ArtifactStagingDirectory)'
+                      archiveFile: '$(Build.ArtifactStagingDirectory)/$(Build.BuildId).zip'
                       replaceExistingArchive: true
 
             - task: PublishBuildArtifacts@1
               continueOnError: false 
               inputs:
-                            PathtoPublish: '$(Build.ArtifactStagingDirectory)'
+                            PathtoPublish: '$(Build.ArtifactStagingDirectory)/$(Build.BuildId).zip'
                             ArtifactName: 'Contentful'
                             publishLocation: 'Container'
                             
-       - deployment: VMDeploy
-         displayName: Deploy to VM
-         environment: 
+  - stage: Deployment
+    displayName: Deployment
+    dependsOn: Build
+    jobs:
+     - job:
+     - deployment: VMDeploy
+       displayName: Deploy to VM
+       environment: 
                 name: CloudSigma
                 resourceType: VirtualMachine
                 tags: dev, web # only deploy to virtual machines with this tag
-         strategy:
+       strategy:
                 runOnce:
                   deploy:   
                       steps:
