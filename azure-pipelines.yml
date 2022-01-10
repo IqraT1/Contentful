@@ -91,7 +91,7 @@ stages:
                           inputs:
                             IISDeploymentType: 'IISWebsite'
                             ActionIISWebsite: 'CreateOrUpdateWebsite'
-                            WebsiteName: 'Contenful'
+                            WebsiteName: 'Default Web Site'
                             WebsitePhysicalPath: 'C:\contentful\Deployment'
                             WebsitePhysicalPathAuth: 'WebsiteUserPassThrough'
                           
@@ -99,7 +99,7 @@ stages:
                           continueOnError: false 
                           displayName: IISWebAppDeploy
                           inputs:
-                              WebSiteName: 'IISWebAppDeploy'
+                              WebSiteName: 'Default Web Site'
                               VirtualApplication: 'CloudSigma'
                               Package: '$(System.DefaultWorkingDirectory)/Contentful/$(Build.BuildId).zip'
                               TakeAppOfflineFlag: true
