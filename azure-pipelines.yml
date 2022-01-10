@@ -82,6 +82,6 @@ stages:
                           inputs:
                               WebSiteName: 'IISWebAppDeploy'
                               VirtualApplication: 'CloudSigma'
-                              Package: '$(System.DefaultWorkingDirectory)\**\*.zip'
+                              Package: '$(System.DefaultWorkingDirectory)\Contenful\*.zip'
                               TakeAppOfflineFlag: true
-                              XmlVariableSubstitution: true
+                              XmlVariableSubstitution: true 
