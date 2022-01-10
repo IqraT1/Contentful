@@ -84,7 +84,7 @@ stages:
                               buildType: 'current'
                               downloadType: 'single'
                               artifactName: 'Contentful'
-                              downloadPath: '$(System.ArtifactsDirectory)'
+                              downloadPath: '$(System.DefaultWorkingDirectory)'
                         - task: IISWebAppManagementOnMachineGroup@0
                           continueOnError: false 
                           displayName: IISWebAppManage
