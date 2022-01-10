@@ -55,7 +55,7 @@ stages:
                             ArtifactName: 'Contentful'
                             publishLocation: 'Container'
 
-       - job:
+       - job: Deployment
        - deployment: VMDeploy
          displayName: Deploy to VM
          environment: 
