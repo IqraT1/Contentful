@@ -66,4 +66,22 @@ stages:
                 runOnce:
                   deploy:   
                       steps:
-                      
+                        - task: IISWebAppManagementOnMachineGroup@0
+                          displayName: IISWebAppManage
+                          inputs:
+                            IISDeploymentType: 'IISWebsite'
+                            ActionIISWebsite: 'CreateOrUpdateWebsite'
+                            WebsiteName: 'Contenful'
+                            WebsitePhysicalPath: 'C:\contentful\Deployment'
+                            WebsitePhysicalPathAuth: 'WebsiteUserPassThrough'
+                            AddBinding: true
+                            Bindings: 'http/All Unassigned:80:'
+                          
+                        - task: IISWebAppDeploymentOnMachineGroup@0
+                          displayName: IISWebAppDeploy
+                          inputs:
+                              WebSiteName: 'IISWebAppDeploy'
+                              VirtualApplication: 'CloudSigma'
+                              Package: '$(System.DefaultWorkingDirectory)\**\*.zip'
+                              TakeAppOfflineFlag: true
+                              XmlVariableSubstitution: true
