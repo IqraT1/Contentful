@@ -66,6 +66,12 @@ jobs:
                 runOnce:
                   deploy:   
                       steps:
+                        - task: DownloadBuildArtifacts@1
+                          inputs:
+                              buildType: 'current'
+                              downloadType: 'single'
+                              artifactName: 'Contentful'
+                              downloadPath: '$(System.ArtifactsDirectory)/$(Build.BuildId).zip'
                         - task: IISWebAppManagementOnMachineGroup@0
                           continueOnError: false 
                           displayName: IISWebAppManage
