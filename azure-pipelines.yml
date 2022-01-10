@@ -8,10 +8,8 @@ trigger:
 
 pool:
   vmImage: ubuntu-latest
-stages:
-  - stage: Build
-    displayName: Build
-    jobs:
+
+jobs:
        - job: 
          displayName: Build, Run and Publish
          steps:
@@ -57,28 +55,17 @@ stages:
                             PathtoPublish: '$(Build.ArtifactStagingDirectory)/$(Build.BuildId).zip'
                             ArtifactName: 'Contentful'
                             publishLocation: 'Container'
-
-  - stage: Deployment
-    displayName: Deployment
-    jobs:
-          - job:
-          - deployment: VMDeploy
-            displayName: Deploy to VM
-            environment: 
+                            
+       - deployment: VMDeploy
+         displayName: Deploy to VM
+         environment: 
                 name: CloudSigma
                 resourceType: VirtualMachine
                 tags: dev, web # only deploy to virtual machines with this tag
-            strategy:
+         strategy:
                 runOnce:
                   deploy:   
                       steps:
-                        - task: DownloadBuildArtifacts@1
-                          inputs:
-                            buildType: 'current'
-                            downloadType: 'single'
-                            artifactName: 'Contentful'
-                            downloadPath: '$(System.ArtifactsDirectory)'
-                            checkDownloadedFiles: true
                         - task: IISWebAppManagementOnMachineGroup@0
                           continueOnError: false 
                           displayName: IISWebAppManage
