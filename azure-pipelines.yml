@@ -36,12 +36,14 @@ stages:
 
             - task: CopyFiles@2
               displayName: "Copy files"
+              continueOnError: false 
               inputs:
                         SourceFolder: '$(Build.SourcesDirectory)'
                         Contents: '**'
                         TargetFolder: '$(Build.ArtifactStagingDirectory)'
 
             - task: ArchiveFiles@2
+              continueOnError: false 
               inputs:
                       rootFolderOrFile: '$(Build.ArtifactStagingDirectory)'
                       includeRootFolder: false
@@ -50,23 +52,28 @@ stages:
                       replaceExistingArchive: true
 
             - task: PublishBuildArtifacts@1
+              continueOnError: false 
               inputs:
                             PathtoPublish: '$(Build.ArtifactStagingDirectory)/$(Build.BuildId).zip'
                             ArtifactName: 'Contentful'
                             publishLocation: 'Container'
 
-       - job: Deployment
-       - deployment: VMDeploy
-         displayName: Deploy to VM
-         environment: 
+  - stage: Deployment
+    displayName: Deployment
+    jobs:
+          - job:
+          - deployment: VMDeploy
+            displayName: Deploy to VM
+            environment: 
                 name: CloudSigma
                 resourceType: VirtualMachine
                 tags: dev, web # only deploy to virtual machines with this tag
-         strategy:
+            strategy:
                 runOnce:
                   deploy:   
                       steps:
                         - task: IISWebAppManagementOnMachineGroup@0
+                          continueOnError: false 
                           displayName: IISWebAppManage
                           inputs:
                             IISDeploymentType: 'IISWebsite'
@@ -76,6 +83,7 @@ stages:
                             WebsitePhysicalPathAuth: 'WebsiteUserPassThrough'
                           
                         - task: IISWebAppDeploymentOnMachineGroup@0
+                          continueOnError: false 
                           displayName: IISWebAppDeploy
                           inputs:
                               WebSiteName: 'IISWebAppDeploy'
